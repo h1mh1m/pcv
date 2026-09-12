@@ -32,6 +32,11 @@ while True:
     if not ret :
         print("gagal mendapatkan frame dari kamera")
         break
+    [h,w,c] = frame.shape
+    for i in range (h):
+        for j in range(w):
+            frame[i,j,0] = 0
+            frame[i,j,1] = 0
 
     cv2.imshow("Kamera",frame)
 
