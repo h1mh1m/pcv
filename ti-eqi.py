@@ -45,13 +45,51 @@ def TransformasiPangkat(im, gamma):
             imhasil[i,j] = int(nilai_baru)
     return imhasil
 
+def ekualisasi_manual(im, L=256):
+    MN = im.size
+    hist = np.bincount(im.ravel(), minlength=L) # 1. histogram
+    p = hist / MN # 2. ternormalisasi
+    cdf = np.cumsum(p) # 3. distribusi kumulatif
+    s = np.floor((L - 1) * cdf + 0.5) # 4. skala dan bulatkan
+    lut = np.clip(s, 0, L - 1).astype(np.uint8) # jadikan tabel
+    return lut[im] # 5. petakan tiap piksel
+        
 
-cv2.imshow("transformasi negatif",CitraNegatif(image))
-cv2.imshow("transformasi logaritmik", TransformasiLogarimtik(image))
-cv2.imshow("transformasi pangkat", TransformasiPangkat(image, gamma=1.0))
-# TransformasiLogarimtik(image) 
+# cv2.imshow("transformasi negatif",CitraNegatif(image))
+# cv2.imshow("transformasi logaritmik", TransformasiLogarimtik(image))
+# cv2.imshow("transformasi pangkat", TransformasiPangkat(image, gamma=1.0))
+# # TransformasiLogarimtik(image) 
 
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-    
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
+# video = cv2.VideoCapture(0)
+
+# if not video.isOpened():
+#     print("gagal membuka kamera")
+#     exit
+
+# while True:
+#     ret, frame = video.read()
+
+#     if not ret :
+#         print("gagal mendapatkan frame dari kamera")
+#         break
+
+#     frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+#     Transnegatif = CitraNegatif(frame_gray)
+#     TransLoga = TransformasiLogarimtik(frame_gray)
+#     TransPang = TransformasiPangkat(frame_gray,gamma=1.0)
+
+#     cv2.imshow("Negatif",Transnegatif)
+#     cv2.imshow("logaritmik", TransLoga)
+#     cv2.imshow("Pangkat", TransPang)
+
+#     if cv2.waitKey(1) & 0xff == ord('q'):
+#         break
+
+# video.release()
+# cv2.destroyAllWindows()
+
 
